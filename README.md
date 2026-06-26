@@ -27,7 +27,20 @@ The primary objectives of this project include:
 
 ## Architecture
 
-![Architecture](assets/images/architecture.png)
+```mermaid
+flowchart LR
+    TF[Terraform] --> GCP[(GCP Resources)]
+    SRC[SF 311 Data] --> PRE[Prefect ETL]
+    PRE --> BQ[(BigQuery)]
+    BQ --> DBT[dbt transforms]
+    DBT --> BQ
+    BQ --> TRAIN[Model Training]
+    TRAIN --> ML[MLflow Tracking]
+    TRAIN --> API[FastAPI Service]
+    API --> RUN[GCP Cloud Run]
+    DOCK[Docker] -.-> API
+    GHA[GitHub Actions CI/CD] -.-> RUN
+```
 
 ## Project Structure
 
